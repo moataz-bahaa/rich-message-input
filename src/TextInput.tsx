@@ -1,13 +1,15 @@
-import { forwardRef, useCallback, useEffect, useId, useMemo, useRef, useState, type ChangeEvent } from 'react';
 import type { Editor } from '@tiptap/core';
 import { EditorContent, useEditor } from '@tiptap/react';
+import { forwardRef, useCallback, useEffect, useId, useMemo, useRef, useState, type ChangeEvent } from 'react';
 import { defaultSlashCommands, mergeCommands } from './commands';
+import { Footer } from './components/Footer';
+import { LinkEditor } from './components/LinkEditor';
+import { RecorderPanel } from './components/RecorderPanel';
+import { SlashMenu } from './components/SlashMenu';
+import { DEFAULT_TOOLBAR, Toolbar } from './components/Toolbar';
 import { EMPTY_DOCUMENT, isDocumentEmpty } from './content';
 import { createFileHandlers } from './editor-props';
 import { createExtensions } from './extensions/create-extensions';
-import { applyLink, getLinkHref, removeLink } from './link-actions';
-import { createSlashItems, filterSlashItems } from './slash-items';
-import { resolveMessages } from './i18n';
 import { useActiveDescendant } from './hooks/useActiveDescendant';
 import { useAttachments } from './hooks/useAttachments';
 import { useControlledValue } from './hooks/useControlledValue';
@@ -16,13 +18,11 @@ import { useErrorReporter } from './hooks/useErrorReporter';
 import { useMediaRecording } from './hooks/useMediaRecording';
 import { useSlashMenu } from './hooks/useSlashMenu';
 import { useTextInputHandle } from './hooks/useTextInputHandle';
+import { resolveMessages } from './i18n';
 import { useLatest } from './lib/useLatest';
-import { cx, SlotsProvider, slotProps, toCssText } from './slots';
-import { Footer } from './components/Footer';
-import { LinkEditor } from './components/LinkEditor';
-import { RecorderPanel } from './components/RecorderPanel';
-import { SlashMenu } from './components/SlashMenu';
-import { DEFAULT_TOOLBAR, Toolbar } from './components/Toolbar';
+import { applyLink, getLinkHref, removeLink } from './link-actions';
+import { createSlashItems, filterSlashItems } from './slash-items';
+import { cx, slotProps, SlotsProvider, toCssText } from './slots';
 import type { EditorApi, RichTextDocument, TextInputHandle, TextInputProps } from './types';
 
 export const TextInput = forwardRef<TextInputHandle, TextInputProps>(function TextInput(props, ref) {

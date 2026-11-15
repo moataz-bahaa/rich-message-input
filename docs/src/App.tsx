@@ -1,9 +1,14 @@
+import {
+  previewProps,
+  shortcuts,
+  slashCommandIds,
+  slots,
+  textInputProps,
+} from './api';
 import { ApiTable } from './components/ApiTable';
 import { CodeBlock } from './components/CodeBlock';
 import { ExampleCard } from './components/ExampleCard';
 import { Playground } from './components/Playground';
-import { shortcuts, slashCommandIds, slots, textInputProps, previewProps } from './api';
-import { publishSteps } from './publishing';
 
 import { ArabicRtl } from './examples/ArabicRtl';
 import arabicSource from './examples/ArabicRtl.tsx?raw';
@@ -34,14 +39,66 @@ const nav = [
 ] as const;
 
 const examples = [
-  { id: 'ex-basic', title: 'Basic chat', description: 'Uncontrolled editor. Send with the button or Ctrl+Enter; each sent message is rendered with <Preview />.', Live: BasicChat, source: basicSource },
-  { id: 'ex-controlled', title: 'Controlled value', description: 'Keep the document in your own state, derive plain text from it, and clear it after sending.', Live: ControlledValue, source: controlledSource },
-  { id: 'ex-slash', title: 'Custom slash commands', description: 'Register your own commands. Type / then “date” or “shrug”.', Live: CustomSlashCommands, source: slashSource },
-  { id: 'ex-upload', title: 'Uploads and recording', description: 'The package never uploads files. Provide onUpload and return a URL from your own storage. Try the paperclip, mic and camera buttons.', Live: UploadHandlerExample, source: uploadSource },
-  { id: 'ex-rtl', title: 'Arabic and RTL', description: 'Arabic UI, per-paragraph direction for mixed text, and runtime direction switching.', Live: ArabicRtl, source: arabicSource },
-  { id: 'ex-toolbar', title: 'Toolbar and command customization', description: 'Show only the tools you want and remove commands.', Live: ToolbarAndCommands, source: toolbarSource },
-  { id: 'ex-styling', title: 'Styling', description: 'CSS variables, per-part classNames and styles.', Live: StylingExample, source: stylingSource },
-  { id: 'ex-ref', title: 'Imperative API (ref)', description: 'Focus, read, and clear the editor from outside.', Live: RefApi, source: refSource },
+  {
+    id: 'ex-basic',
+    title: 'Basic chat',
+    description:
+      'Uncontrolled editor. Send with the button or Ctrl+Enter; each sent message is rendered with <Preview />.',
+    Live: BasicChat,
+    source: basicSource,
+  },
+  {
+    id: 'ex-controlled',
+    title: 'Controlled value',
+    description:
+      'Keep the document in your own state, derive plain text from it, and clear it after sending.',
+    Live: ControlledValue,
+    source: controlledSource,
+  },
+  {
+    id: 'ex-slash',
+    title: 'Custom slash commands',
+    description: 'Register your own commands. Type / then “date” or “shrug”.',
+    Live: CustomSlashCommands,
+    source: slashSource,
+  },
+  {
+    id: 'ex-upload',
+    title: 'Uploads and recording',
+    description:
+      'The package never uploads files. Provide onUpload and return a URL from your own storage. Try the paperclip, mic and camera buttons.',
+    Live: UploadHandlerExample,
+    source: uploadSource,
+  },
+  {
+    id: 'ex-rtl',
+    title: 'Arabic and RTL',
+    description:
+      'Arabic UI, per-paragraph direction for mixed text, and runtime direction switching.',
+    Live: ArabicRtl,
+    source: arabicSource,
+  },
+  {
+    id: 'ex-toolbar',
+    title: 'Toolbar and command customization',
+    description: 'Show only the tools you want and remove commands.',
+    Live: ToolbarAndCommands,
+    source: toolbarSource,
+  },
+  {
+    id: 'ex-styling',
+    title: 'Styling',
+    description: 'CSS variables, per-part classNames and styles.',
+    Live: StylingExample,
+    source: stylingSource,
+  },
+  {
+    id: 'ex-ref',
+    title: 'Imperative API (ref)',
+    description: 'Focus, read, and clear the editor from outside.',
+    Live: RefApi,
+    source: refSource,
+  },
 ];
 
 const installCode = `npm install rich-message-input
@@ -100,9 +157,9 @@ const stylingCode = `<TextInput
 .my-editor { --rte-accent: #7c3aed; --rte-radius: 16px; }`;
 
 export const App = () => (
-  <div className="layout">
-    <nav className="nav" aria-label="Documentation">
-      <a className="brand" href="#start">
+  <div className='layout'>
+    <nav className='nav' aria-label='Documentation'>
+      <a className='brand' href='#start'>
         rich-message-input
       </a>
       {nav.map(([id, label]) => (
@@ -113,72 +170,91 @@ export const App = () => (
     </nav>
 
     <main>
-      <header className="hero" id="start">
+      <header className='hero' id='start'>
         <h1>rich-message-input</h1>
         <p>
-          A Slack-style inline rich text input for React, with a matching read-only <code>&lt;Preview /&gt;</code>. Slash
-          commands, attachments, voice and video recording, and first-class Arabic/RTL support. Backend-agnostic and styled with plain CSS.
+          A Slack-style inline rich text input for React, with a matching
+          read-only <code>&lt;Preview /&gt;</code>. Slash commands, attachments,
+          voice and video recording, and first-class Arabic/RTL support.
+          Backend-agnostic and styled with plain CSS.
         </p>
         <h2>Install</h2>
-        <CodeBlock code={installCode} label="bash" />
+        <CodeBlock code={installCode} label='bash' />
         <h2>Quick start</h2>
-        <CodeBlock code={quickStartCode} label="tsx" />
+        <CodeBlock code={quickStartCode} label='tsx' />
         <p>
-          The editor gives you a serializable JSON document; store it anywhere and render it later with <code>&lt;Preview /&gt;</code>. Controlled usage
-          (<code>value</code> + <code>onChange</code>) works too.
+          The editor gives you a serializable JSON document; store it anywhere
+          and render it later with <code>&lt;Preview /&gt;</code>. Controlled
+          usage (<code>value</code> + <code>onChange</code>) works too.
         </p>
       </header>
 
-      <section id="playground">
+      <section id='playground'>
         <h2>Playground</h2>
-        <p>Change the options, type in the editor, and watch the preview, the JSON and the generated code. Try typing <code>/</code>.</p>
+        <p>
+          Change the options, type in the editor, and watch the preview, the
+          JSON and the generated code. Try typing <code>/</code>.
+        </p>
         <Playground />
       </section>
 
-      <section id="examples">
+      <section id='examples'>
         <h2>Examples</h2>
-        <p>Every example below is live, and the code shown is the exact source file that renders it.</p>
+        <p>
+          Every example below is live, and the code shown is the exact source
+          file that renders it.
+        </p>
         {examples.map((example) => (
           <ExampleCard key={example.id} {...example} />
         ))}
       </section>
 
-      <section id="content">
+      <section id='content'>
         <h2>Content format</h2>
         <p>
-          <code>onChange</code> and <code>onSubmit</code> give a <code>RichTextDocument</code>: Tiptap/ProseMirror JSON. Save it as JSON, then pass it to{' '}
-          <code>&lt;Preview value /&gt;</code> or <code>&lt;TextInput value /&gt;</code>.
+          <code>onChange</code> and <code>onSubmit</code> give a{' '}
+          <code>RichTextDocument</code>: Tiptap/ProseMirror JSON. Save it as
+          JSON, then pass it to <code>&lt;Preview value /&gt;</code> or{' '}
+          <code>&lt;TextInput value /&gt;</code>.
         </p>
-        <CodeBlock code={contentCode} label="json" />
+        <CodeBlock code={contentCode} label='json' />
         <ul>
           <li>
-            Nodes: <code>paragraph heading(1–3) bulletList orderedList listItem blockquote codeBlock horizontalRule hardBreak attachment</code>
+            Nodes:{' '}
+            <code>
+              paragraph heading(1–3) bulletList orderedList listItem blockquote
+              codeBlock horizontalRule hardBreak attachment
+            </code>
           </li>
           <li>
             Marks: <code>bold italic underline strike code highlight link</code>
           </li>
           <li>
-            Helpers: <code>toPlainText</code>, <code>isDocumentEmpty</code>, <code>getAttachments</code>, <code>EMPTY_DOCUMENT</code>
+            Helpers: <code>toPlainText</code>, <code>isDocumentEmpty</code>,{' '}
+            <code>getAttachments</code>, <code>EMPTY_DOCUMENT</code>
           </li>
           <li>
-            <code>&lt;Preview /&gt;</code> only allows <code>http(s)</code>, <code>mailto</code>, <code>tel</code> and relative links, and never loads the editor runtime.
+            <code>&lt;Preview /&gt;</code> only allows <code>http(s)</code>,{' '}
+            <code>mailto</code>, <code>tel</code> and relative links, and never
+            loads the editor runtime.
           </li>
         </ul>
       </section>
 
-      <section id="slash">
+      <section id='slash'>
         <h2>Slash commands</h2>
         <p>
-          Type <code>/</code> to open the menu and keep typing to filter by id, title or (localized) keywords. Built-in ids:
+          Type <code>/</code> to open the menu and keep typing to filter by id,
+          title or (localized) keywords. Built-in ids:
         </p>
-        <p className="chips">
+        <p className='chips'>
           {slashCommandIds.map((id) => (
             <code key={id}>/{id}</code>
           ))}
         </p>
-        <CodeBlock code={slashCode} label="tsx" />
+        <CodeBlock code={slashCode} label='tsx' />
         <h3>Keyboard shortcuts</h3>
-        <div className="table-wrap">
+        <div className='table-wrap'>
           <table>
             <tbody>
               {shortcuts.map(([keys, action]) => (
@@ -194,41 +270,42 @@ export const App = () => (
         </div>
       </section>
 
-      <section id="styling">
+      <section id='styling'>
         <h2>Styling</h2>
         <p>
-          Three layers: <strong>CSS variables</strong> (<code>--rte-*</code>), <strong>per-part props</strong> (<code>classNames</code>, <code>styles</code>), and{' '}
-          <strong>plain CSS</strong> through <code>data-rte-slot</code> attributes. The package stylesheet lives in <code>@layer rte</code>, so your own un-layered CSS
-          (Tailwind, CSS modules, global CSS) wins without <code>!important</code>.
+          Three layers: <strong>CSS variables</strong> (<code>--rte-*</code>),{' '}
+          <strong>per-part props</strong> (<code>classNames</code>,{' '}
+          <code>styles</code>), and <strong>plain CSS</strong> through{' '}
+          <code>data-rte-slot</code> attributes. The package stylesheet lives in{' '}
+          <code>@layer rte</code>, so your own un-layered CSS (Tailwind, CSS
+          modules, global CSS) wins without <code>!important</code>.
         </p>
-        <CodeBlock code={stylingCode} label="tsx / css" />
-        <ApiTable rows={slots} typeHeader="Component" />
+        <CodeBlock code={stylingCode} label='tsx / css' />
+        <ApiTable rows={slots} typeHeader='Component' />
       </section>
 
-      <section id="api">
+      <section id='api'>
         <h2>API reference</h2>
         <h3>&lt;TextInput /&gt;</h3>
         <ApiTable rows={textInputProps} />
         <p>
-          A <code>ref</code> exposes <code>{'{ editor, focus(), clear(), getDocument(), setDocument(doc), isEmpty() }'}</code> (<code>TextInputHandle</code>). Slash command{' '}
-          <code>run</code> receives <code>{'{ editor, range, api }'}</code>, where <code>api</code> has <code>openLinkEditor, pickFiles, startRecording, insertAttachment, toggleDirection</code>.
+          A <code>ref</code> exposes{' '}
+          <code>
+            {
+              '{ editor, focus(), clear(), getDocument(), setDocument(doc), isEmpty() }'
+            }
+          </code>{' '}
+          (<code>TextInputHandle</code>). Slash command <code>run</code>{' '}
+          receives <code>{'{ editor, range, api }'}</code>, where{' '}
+          <code>api</code> has{' '}
+          <code>
+            openLinkEditor, pickFiles, startRecording, insertAttachment,
+            toggleDirection
+          </code>
+          .
         </p>
         <h3>&lt;Preview /&gt;</h3>
         <ApiTable rows={previewProps} />
-      </section>
-
-      <section id="publishing">
-        <h2>Publishing to npm</h2>
-        <p>One-time setup, then every release is a version bump and a GitHub release.</p>
-        <ol className="steps">
-          {publishSteps.map((step) => (
-            <li key={step.title}>
-              <strong>{step.title}</strong>
-              <p>{step.body}</p>
-              {step.code && <CodeBlock code={step.code} label="bash" />}
-            </li>
-          ))}
-        </ol>
       </section>
 
       <footer>MIT licensed. Built on Tiptap and ProseMirror.</footer>
