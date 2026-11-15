@@ -10,6 +10,8 @@ Built on [Tiptap](https://tiptap.dev) (ProseMirror). Backend-agnostic, plain CSS
 - Mixed English/Arabic in one message (per-paragraph direction), dynamic LTR/RTL switching
 - Serializable JSON content; `<Preview />` doesn't load the editor runtime
 
+**Docs, live examples and playground:** https://YOUR-USER.github.io/rich-message-input/ (source in `docs/`; deployment and publishing steps in [PUBLISHING.md](./PUBLISHING.md)).
+
 ## Install
 
 ```bash
@@ -218,10 +220,13 @@ src/
 
 ```bash
 npm install
-npm run dev          # demo at http://localhost:5173
+npm run dev          # docs + playground at http://localhost:5173
+npm run docs:build   # static site into docs-dist/
 npm test             # jsdom smoke test (editor, slash menu, preview, sanitizing)
 npm run build        # dist/ (ESM + CJS + .d.ts + styles.css)
-npm publish          # runs typecheck + build first
+npm publish          # runs typecheck + build first (see PUBLISHING.md)
 ```
+
+Docs site: `docs/` (Vite app with the playground, runnable examples and API tables; each example file is rendered live and shown as its own source).
 
 Not covered by automated tests: real browser recording, drag & drop, and IME/caret behavior in mixed-direction text. Check these in the demo.

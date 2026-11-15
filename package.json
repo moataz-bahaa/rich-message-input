@@ -26,15 +26,18 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsup && node scripts/copy-css.mjs",
-    "dev": "vite demo",
-    "demo:build": "vite build demo",
+    "dev": "vite docs",
     "typecheck": "tsc --noEmit",
     "test": "node scripts/smoke.mjs",
-    "prepublishOnly": "npm run typecheck && npm run build"
+    "prepublishOnly": "npm run typecheck && npm run build",
+    "docs:build": "vite build docs",
+    "docs:preview": "vite preview docs --outDir ../docs-dist",
+    "docs:check": "node scripts/docs-ssr-check.mjs"
   },
   "peerDependencies": {
     "react": ">=18",
@@ -50,6 +53,7 @@
     "@tiptap/suggestion": "^3.0.0"
   },
   "devDependencies": {
+    "@types/node": "^20.19.43",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.0",
@@ -60,5 +64,32 @@
     "tsup": "^8.3.0",
     "typescript": "^5.6.0",
     "vite": "^6.0.0"
+  },
+  "author": "Your Name <you@example.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YOUR-USER/rich-message-input.git"
+  },
+  "homepage": "https://YOUR-USER.github.io/rich-message-input/",
+  "bugs": {
+    "url": "https://github.com/YOUR-USER/rich-message-input/issues"
+  },
+  "keywords": [
+    "react",
+    "rich-text",
+    "editor",
+    "slack",
+    "tiptap",
+    "prosemirror",
+    "slash-commands",
+    "rtl",
+    "arabic",
+    "message-input"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
