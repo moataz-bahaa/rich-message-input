@@ -1,0 +1,504 @@
+/* rich-message-input — plain CSS, themable through custom properties.
+   Override any --rte-* variable on .rte-root (or an ancestor). */
+
+/* Everything lives in the `rte` cascade layer, so any un-layered CSS you write wins,
+   regardless of source order or specificity. */
+@layer rte {
+  .rte-root,
+  .rte-portal {
+    --rte-bg: #ffffff;
+    --rte-fg: #1d1c1d;
+    --rte-muted: #616061;
+    --rte-border: #c9c9cb;
+    --rte-border-focus: #1264a3;
+    --rte-hover: rgba(29, 28, 29, 0.07);
+    --rte-active: rgba(18, 100, 163, 0.16);
+    --rte-accent: #007a5a;
+    --rte-accent-fg: #ffffff;
+    --rte-code-bg: rgba(29, 28, 29, 0.06);
+    --rte-code-fg: #c01343;
+    --rte-mark: #fff3b0;
+    --rte-link: #1264a3;
+    --rte-danger: #e01e5a;
+    --rte-radius: 10px;
+    --rte-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans Arabic', 'Helvetica Neue', Arial, sans-serif;
+    --rte-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --rte-shadow: 0 6px 24px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .rte-root:not([data-theme]),
+    .rte-portal:not([data-theme]) {
+      --rte-bg: #1a1d21;
+      --rte-fg: #d1d2d3;
+      --rte-muted: #9a9b9e;
+      --rte-border: #565856;
+      --rte-border-focus: #5aa9e6;
+      --rte-hover: rgba(255, 255, 255, 0.08);
+      --rte-active: rgba(90, 169, 230, 0.25);
+      --rte-code-bg: rgba(255, 255, 255, 0.08);
+      --rte-code-fg: #ff7a9c;
+      --rte-mark: #6b5b00;
+      --rte-link: #5aa9e6;
+      --rte-shadow: 0 6px 24px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  .rte-root[data-theme='dark'],
+  .rte-portal[data-theme='dark'] {
+    --rte-bg: #1a1d21;
+    --rte-fg: #d1d2d3;
+    --rte-muted: #9a9b9e;
+    --rte-border: #565856;
+    --rte-border-focus: #5aa9e6;
+    --rte-hover: rgba(255, 255, 255, 0.08);
+    --rte-active: rgba(90, 169, 230, 0.25);
+    --rte-code-bg: rgba(255, 255, 255, 0.08);
+    --rte-code-fg: #ff7a9c;
+    --rte-mark: #6b5b00;
+    --rte-link: #5aa9e6;
+    --rte-shadow: 0 6px 24px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+
+  /* ------------------------------------------------------------------ shell */
+
+  .rte-root {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    color: var(--rte-fg);
+    font-family: var(--rte-font);
+    font-size: 15px;
+    line-height: 1.46;
+  }
+  .rte-root *,
+  .rte-portal * {
+    box-sizing: border-box;
+  }
+  .rte-root:not(.rte-preview) {
+    background: var(--rte-bg);
+    border: 1px solid var(--rte-border);
+    border-radius: var(--rte-radius);
+    transition: border-color 0.12s, box-shadow 0.12s;
+  }
+  .rte-root:not(.rte-preview):focus-within {
+    border-color: var(--rte-border-focus);
+    box-shadow: 0 0 0 1px var(--rte-border-focus);
+  }
+  .rte-root[data-disabled] {
+    opacity: 0.6;
+  }
+
+  .rte-scroll {
+    min-height: var(--rte-min-height, 56px);
+    max-height: var(--rte-max-height, 320px);
+    overflow-y: auto;
+    padding: 8px 12px;
+  }
+
+  /* ---------------------------------------------------------------- toolbar */
+
+  .rte-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 6px;
+    border-block-end: 1px solid var(--rte-border);
+  }
+  .rte-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    color: var(--rte-muted);
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .rte-btn:hover:not(:disabled) {
+    background: var(--rte-hover);
+    color: var(--rte-fg);
+  }
+  .rte-btn[data-active] {
+    background: var(--rte-active);
+    color: var(--rte-fg);
+  }
+  .rte-btn:focus-visible,
+  .rte-select:focus-visible,
+  .rte-send:focus-visible,
+  .rte-link__btn:focus-visible {
+    outline: 2px solid var(--rte-border-focus);
+    outline-offset: 1px;
+  }
+  /* arrows and send glyph point the reading direction */
+  [dir='rtl'] .rte-send .rte-icon {
+    transform: scaleX(-1);
+  }
+  .rte-select {
+    height: 28px;
+    margin-inline-end: 4px;
+    padding: 0 4px;
+    color: var(--rte-fg);
+    background: var(--rte-bg);
+    border: 1px solid var(--rte-border);
+    border-radius: 6px;
+    font: inherit;
+    font-size: 13px;
+  }
+
+  /* ---------------------------------------------------------- link / record */
+
+  .rte-link {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 8px 12px;
+    border-block-end: 1px solid var(--rte-border);
+    background: var(--rte-hover);
+  }
+  .rte-link__label {
+    display: flex;
+    flex: 1 1 200px;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 12px;
+    color: var(--rte-muted);
+  }
+  .rte-link__input {
+    width: 100%;
+    padding: 6px 8px;
+    color: var(--rte-fg);
+    background: var(--rte-bg);
+    border: 1px solid var(--rte-border);
+    border-radius: 6px;
+    font: inherit;
+  }
+  .rte-link__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px;
+    color: var(--rte-fg);
+    background: var(--rte-bg);
+    border: 1px solid var(--rte-border);
+    border-radius: 6px;
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .rte-link__btn:hover {
+    background: var(--rte-hover);
+  }
+  .rte-link__btn--primary {
+    color: var(--rte-accent-fg);
+    background: var(--rte-accent);
+    border-color: var(--rte-accent);
+  }
+  .rte-link__btn--primary:hover {
+    background: var(--rte-accent);
+    filter: brightness(1.1);
+  }
+  .rte-link__btn .rte-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .rte-recorder {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px 12px;
+    border-block-start: 1px solid var(--rte-border);
+    background: var(--rte-hover);
+  }
+  .rte-recorder__video {
+    width: 100%;
+    max-height: 220px;
+    border-radius: 8px;
+    background: #000;
+    object-fit: cover;
+  }
+  .rte-recorder__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+  .rte-recorder__spacer {
+    flex: 1;
+  }
+  .rte-recorder__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--rte-danger);
+    animation: rte-pulse 1.2s ease-in-out infinite;
+  }
+  .rte-recorder__time {
+    font-variant-numeric: tabular-nums;
+    color: var(--rte-muted);
+  }
+  @keyframes rte-pulse {
+    50% {
+      opacity: 0.25;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rte-recorder__dot {
+      animation: none;
+    }
+  }
+
+  /* ----------------------------------------------------------------- footer */
+
+  .rte-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 0 6px 6px;
+    min-height: 8px;
+  }
+  .rte-status {
+    font-size: 12px;
+    color: var(--rte-muted);
+  }
+  .rte-send {
+    display: inline-grid;
+    place-items: center;
+    width: 32px;
+    height: 28px;
+    margin-inline-start: auto;
+    color: var(--rte-accent-fg);
+    background: var(--rte-accent);
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .rte-send:disabled {
+    background: var(--rte-hover);
+    color: var(--rte-muted);
+    cursor: not-allowed;
+  }
+
+  /* ---------------------------------------------- content (editor + preview) */
+
+  .rte-content {
+    outline: none;
+    word-break: break-word;
+    white-space: pre-wrap;
+    min-height: 1.46em;
+  }
+  .rte-content--preview {
+    white-space: normal;
+  }
+  .rte-content > :first-child {
+    margin-block-start: 0;
+  }
+  .rte-content > :last-child {
+    margin-block-end: 0;
+  }
+  .rte-content p,
+  .rte-content h1,
+  .rte-content h2,
+  .rte-content h3,
+  .rte-content ul,
+  .rte-content ol,
+  .rte-content blockquote,
+  .rte-content pre {
+    margin: 0 0 0.5em;
+  }
+  .rte-content h1 {
+    font-size: 1.6em;
+    line-height: 1.25;
+  }
+  .rte-content h2 {
+    font-size: 1.3em;
+    line-height: 1.3;
+  }
+  .rte-content h3 {
+    font-size: 1.1em;
+    line-height: 1.35;
+  }
+  .rte-content ul,
+  .rte-content ol {
+    padding-inline-start: 1.6em;
+    padding-inline-end: 0;
+  }
+  .rte-content li > p {
+    margin: 0;
+  }
+  .rte-content blockquote {
+    padding-inline-start: 12px;
+    border-inline-start: 4px solid var(--rte-border);
+    color: var(--rte-muted);
+  }
+  .rte-content a {
+    color: var(--rte-link);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .rte-content mark {
+    background: var(--rte-mark);
+    color: inherit;
+    border-radius: 2px;
+    padding: 0 2px;
+  }
+  .rte-content code {
+    padding: 1px 4px;
+    font-family: var(--rte-mono);
+    font-size: 0.88em;
+    color: var(--rte-code-fg);
+    background: var(--rte-code-bg);
+    border: 1px solid var(--rte-border);
+    border-radius: 4px;
+    unicode-bidi: isolate;
+  }
+  .rte-content pre {
+    padding: 10px 12px;
+    overflow-x: auto;
+    direction: ltr;
+    text-align: left;
+    background: var(--rte-code-bg);
+    border: 1px solid var(--rte-border);
+    border-radius: 6px;
+  }
+  .rte-content pre code {
+    padding: 0;
+    color: inherit;
+    background: none;
+    border: 0;
+    font-size: 0.9em;
+    white-space: pre;
+  }
+  .rte-content hr {
+    height: 1px;
+    margin: 0.8em 0;
+    border: 0;
+    background: var(--rte-border);
+  }
+  .rte-content hr.ProseMirror-selectednode {
+    outline: 2px solid var(--rte-border-focus);
+    outline-offset: 2px;
+  }
+
+  /* placeholder (works for LTR and RTL because it is an inline pseudo-element) */
+  .rte-content p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    float: inline-start;
+    height: 0;
+    color: var(--rte-muted);
+    pointer-events: none;
+  }
+
+  /* ------------------------------------------------------------ attachments */
+
+  .rte-attachment {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 0 0.5em;
+    white-space: normal;
+    border-radius: 8px;
+  }
+  .rte-attachment img,
+  .rte-attachment video {
+    display: block;
+    max-width: 100%;
+    max-height: 320px;
+    border: 1px solid var(--rte-border);
+    border-radius: 8px;
+  }
+  .rte-attachment audio {
+    display: block;
+    width: min(320px, 100%);
+  }
+  .rte-attachment--file a {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 8px 12px;
+    color: var(--rte-fg);
+    text-decoration: none;
+    border: 1px solid var(--rte-border);
+    border-radius: 8px;
+  }
+  .rte-attachment--file a:hover {
+    background: var(--rte-hover);
+  }
+  .rte-attachment__meta {
+    font-size: 12px;
+    color: var(--rte-muted);
+  }
+  .rte-attachment.ProseMirror-selectednode {
+    outline: 2px solid var(--rte-border-focus);
+    outline-offset: 2px;
+  }
+
+  /* ------------------------------------------------------------- slash menu */
+
+  .rte-slash {
+    position: fixed;
+    z-index: 10000;
+    max-height: 320px;
+    overflow-y: auto;
+    padding: 4px;
+    color: var(--rte-fg);
+    background: var(--rte-bg);
+    border-radius: 10px;
+    box-shadow: var(--rte-shadow);
+    font-family: var(--rte-font);
+    font-size: 14px;
+  }
+  .rte-slash__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .rte-slash__item[aria-selected='true'] {
+    background: var(--rte-border-focus);
+    color: #fff;
+  }
+  .rte-slash__icon {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid var(--rte-border);
+    border-radius: 6px;
+    background: var(--rte-bg);
+    color: var(--rte-fg);
+  }
+  .rte-slash__text {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .rte-slash__title {
+    font-weight: 600;
+  }
+  .rte-slash__desc {
+    font-size: 12px;
+    opacity: 0.75;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .rte-slash__cmd {
+    flex: none;
+    font-family: var(--rte-mono);
+    font-size: 12px;
+    opacity: 0.7;
+  }
+}
