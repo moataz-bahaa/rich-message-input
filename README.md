@@ -10,7 +10,7 @@ Built on [Tiptap](https://tiptap.dev) (ProseMirror). Backend-agnostic, plain CSS
 - Mixed English/Arabic in one message (per-paragraph direction), dynamic LTR/RTL switching
 - Serializable JSON content; `<Preview />` doesn't load the editor runtime
 
-**Docs, live examples and playground:** https://YOUR-USER.github.io/rich-message-input/ (source in `docs/`; deployment and publishing steps in [PUBLISHING.md](./PUBLISHING.md)).
+**Docs, live examples and playground:** https://moataz-bahaa.github.io/rich-message-input/ (source in `docs/`; deployment and publishing steps in [PUBLISHING.md](./PUBLISHING.md)).
 
 ## Install
 

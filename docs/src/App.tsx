@@ -35,7 +35,6 @@ const nav = [
   ['slash', 'Slash commands'],
   ['styling', 'Styling'],
   ['api', 'API reference'],
-  ['publishing', 'Publishing to npm'],
 ] as const;
 
 const examples = [

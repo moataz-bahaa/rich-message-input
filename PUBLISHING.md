@@ -52,11 +52,11 @@ The site lives in `docs/` and is built by `.github/workflows/docs.yml` on every 
    git add .
    git commit -m "Initial commit"
    git branch -M main
-   git remote add origin https://github.com/YOUR-USER/rich-message-input.git
+   git remote add origin https://github.com/moataz-bahaa/rich-message-input.git
    git push -u origin main
    ```
 2. In the repo go to **Settings, Pages**, and set **Source** to **GitHub Actions**.
-3. The first workflow run publishes the site at `https://YOUR-USER.github.io/rich-message-input/`.
+3. The first workflow run publishes the site at `https://moataz-bahaa.github.io/rich-message-input/`.
    The build uses relative asset paths (`base: './'`), so it works under any repository name.
 
 Local preview:

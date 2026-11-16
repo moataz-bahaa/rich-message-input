@@ -10,7 +10,7 @@ const server = await createServer({ root, configFile: fileURLToPath(new URL('../
 try {
   const { App } = await server.ssrLoadModule('/src/App.tsx');
   const html = renderToString(createElement(App));
-  const ok = ['Playground', 'Custom slash commands', 'Publishing to npm', 'rich-message-input'].every((t) => html.includes(t));
+  const ok = ['Playground', 'Custom slash commands','rich-message-input'].every((t) => html.includes(t));
   console.log(ok ? `PASS docs render (${html.length} bytes)` : 'FAIL docs render');
   process.exitCode = ok ? 0 : 1;
 } finally {
